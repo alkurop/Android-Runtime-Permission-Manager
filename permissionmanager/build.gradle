@@ -1,0 +1,84 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.novoda.bintray-release'
+
+android {
+
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test {
+            setRoot('src/androidTest')
+        }
+        test.java.srcDirs += 'src/androidTest/kotlin'
+
+    }
+}
+
+ext {
+    supportVersion = "23.4.0"
+    mockitoVersion = "2.0.52-beta"
+    mockitoKotlinVersion = "0.5.1"
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+
+    androidTestCompile 'org.robolectric:robolectric:3.0'
+    androidTestCompile "org.mockito:mockito-core:$mockitoVersion"
+    androidTestCompile "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'org.assertj:assertj-core:3.5.1'
+
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testCompile "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'org.assertj:assertj-core:3.5.1'
+}
+
+kapt {
+    generateStubs = true
+}
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.3.4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+publish {
+    groupId = 'com.github.alkurop'
+    artifactId = 'permissionmanager'
+    publishVersion = '0.0.1'
+    desc = 'A small library that manages android 6.0+ runtime permissions'
+    licences = ['MIT']
+    website = 'https://github.com/alkurop/PM'
+}
+
+allprojects {
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
+}
