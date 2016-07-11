@@ -1,0 +1,10 @@
+gradle clean build bintrayUpload -PbintrayUser=alkurop -PbintrayKey=6c8ff4d776d6c0efc6b12424d2efecceb8f7d077 -PdryRun=false -x mavenAndroidJavadocs
+
+    compile 'com.github.alkurop:updatinglist:0.0.1'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://dl.bintray.com/alkurop/maven/'
+    }
+}
