@@ -7,7 +7,7 @@ package com.github.alkurop.jpermissionmanager;
 public class PermissionRequiredDetails extends PermissionOptionalDetails {
     final String requiredMessage;
 
-    public PermissionRequiredDetails (String message, String title, String requiredMessage) {
+    public PermissionRequiredDetails(String title, String message, String requiredMessage) {
         super(message, title, false);
         this.requiredMessage = requiredMessage;
     }

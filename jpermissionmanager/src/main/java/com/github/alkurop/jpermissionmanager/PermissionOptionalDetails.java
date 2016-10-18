@@ -15,7 +15,7 @@ public class PermissionOptionalDetails {
         this.optional = optional;
     }
 
-    public PermissionOptionalDetails (String message, String title) {
+    public PermissionOptionalDetails (String title, String message) {
         this.message = message;
         this.title = title;
         this.optional = true;
