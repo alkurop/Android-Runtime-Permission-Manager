@@ -1,1 +1,1 @@
-include ':demo', ':permissionmanager'
+include ':demo', ':permissionmanager', ':jpermissionmanager'
