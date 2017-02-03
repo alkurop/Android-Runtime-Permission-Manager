@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by alkurop on 9/29/16.
  */
 
-public class PermissionsManager {
+public class PermissionsManager implements PermissionHandler{
     private static final int REQUEST_CODE = 666;
     private static final String TAG = PermissionsManager.class.getName();
     private HashMap<String, Boolean> mCheckResult = new HashMap<>();
@@ -55,28 +55,29 @@ public class PermissionsManager {
         this.mContext = fragment.getContext();
     }
 
+    @Override
     public void clearPermissionsListeners () {
         mListeners.clear();
     }
-
+    @Override
     public void addPermissionsListener (PermissionListener listener) {
         mListeners.add(listener);
     }
-
+    @Override
     public void addPermissions (Map<String, PermissionOptionalDetails> permissionsWithDetails) {
         for (Map.Entry<String, PermissionOptionalDetails> it : permissionsWithDetails.entrySet()) {
             mPermissions.put(it.getKey(), it.getValue());
         }
     }
-
+    @Override
     public void clearPermissions () {
         mPermissions.clear();
     }
-
+    @Override
     public void makePermissionRequest () {
         makePermissionRequest(true);
     }
-
+    @Override
     public void makePermissionRequest (boolean shouldClearResults) {
         if (shouldClearResults) {
             mCheckResult.clear();
@@ -146,7 +147,7 @@ public class PermissionsManager {
             return false;
         }
     }
-
+    @Override
     public void onRequestPermissionsResult (int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_CODE) {
             for (int i = 0; i < permissions.length; i++) {
@@ -216,7 +217,7 @@ public class PermissionsManager {
                         })
                 .show();
     }
-
+    @Override
     public void onActivityResult (int requestCode) {
         if (requestCode == REQUEST_CODE) {
             makePermissionRequest(false);
