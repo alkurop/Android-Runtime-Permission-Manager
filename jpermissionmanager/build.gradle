@@ -58,7 +58,7 @@ buildscript {
 publish {
     groupId = 'com.github.alkurop'
     artifactId = 'jpermissionmanager'
-    publishVersion = '0.0.9'
+    publishVersion = '0.0.8'
     desc = 'A small library that manages android 6.0+ runtime permissions. Java version'
     licences = ['MIT']
     website = 'https://github.com/alkurop/PM'
@@ -81,12 +81,16 @@ task createPom << {
                 }
             }
         }
-    }.writeTo("build/publications/release/pom-default.xml")
+    }.writeTo("build/publications/release/publications/release/pom-default.xml")
 }
 
+task copyTask(type: Copy) {
+    from  'build/publications/release/libs'
+    into  'build/publications/release'
+}
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    buildDir =  "build/publications/release"
+    buildDir =  'build/publications/release'
     classifier = 'sources'
 }
 
@@ -105,3 +109,13 @@ artifacts {
     archives javadocJar
     archives sourcesJar
 }
+
+task prePublish(type: Jar){
+
+}
+
+prePublish.dependsOn clean
+prePublish.dependsOn javadocJar
+prePublish.dependsOn sourcesJar
+prePublish.dependsOn createPom
+
