@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
 
@@ -63,22 +62,15 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.3.4'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
-}
-publish {
-    groupId = 'com.github.alkurop'
-    artifactId = 'permissionmanager'
-    publishVersion = '0.0.2'
-    desc = 'A small library that manages android 6.0+ runtime permissions'
-    licences = ['MIT']
-    website = 'https://github.com/alkurop/PM'
 }
 
-allprojects {
-    tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
-        options.addStringOption('encoding', 'UTF-8')
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
     }
+
 }
+

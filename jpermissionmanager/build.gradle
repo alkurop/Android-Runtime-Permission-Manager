@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
- apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'maven'
 
 android {
 
@@ -51,71 +49,35 @@ buildscript {
         mavenCentral()
         jcenter()
     }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.4.0'
+
+}
+apply plugin: 'com.jfrog.bintray'
+
+
+bintray {
+    user = 'alkurop'
+    key = '6c8ff4d776d6c0efc6b12424d2efecceb8f7d077'
+    dryRun = false
+    publish = true
+
+
+    pkg {
+        userOrg = user
+        repo = 'maven'
+        name = 'jpermissionmanager'
+        licenses = ['MIT']
+        websiteUrl = 'https://github.com/alkurop/Android-Runtime-Permission-Manager.git'
+        issueTrackerUrl = 'https://github.com/alkurop/Android-Runtime-Permission-Manager.git'
+        vcsUrl = 'https://github.com/alkurop/Android-Runtime-Permission-Manager.git'
+        desc = 'A small library that manages android 6.0+ runtime permissions. Java version'
+        version {
+            name = '0.0.8'
+            vcsTag = '0.0.8'
+        }
     }
 }
-publish {
-    groupId = 'com.github.alkurop'
-    artifactId = 'jpermissionmanager'
-    publishVersion = '0.0.8'
-    desc = 'A small library that manages android 6.0+ runtime permissions. Java version'
-    licences = ['MIT']
-    website = 'https://github.com/alkurop/PM'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
 }
-
-
-task createPom << {
-    pom {
-        project {
-            groupId 'com.github.alkurop'
-            artifactId  'jpermissionmanager'
-            version '0.0.8'
-
-            inceptionYear '2017'
-            licenses {
-                license {
-                    name 'MIT'
-                    url 'https://en.wikipedia.org/wiki/MIT_License'
-                    distribution 'repo'
-                }
-            }
-        }
-    }.writeTo("build/publications/release/publications/release/pom-default.xml")
-}
-
-task copyTask(type: Copy) {
-    from  'build/publications/release/libs'
-    into  'build/publications/release'
-}
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    buildDir =  'build/publications/release'
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    buildDir =  "build/publications/release"
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-task prePublish(type: Jar){
-
-}
-
-prePublish.dependsOn clean
-prePublish.dependsOn javadocJar
-prePublish.dependsOn sourcesJar
-prePublish.dependsOn createPom
 
