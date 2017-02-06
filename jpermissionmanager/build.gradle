@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
  apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven'
 
 android {
 
@@ -51,7 +52,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.3.4'
+        classpath 'com.novoda:bintray-release:0.4.0'
     }
 }
 publish {
@@ -63,9 +64,44 @@ publish {
     website = 'https://github.com/alkurop/PM'
 }
 
-allprojects {
-    tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
-        options.addStringOption('encoding', 'UTF-8')
-    }
+
+task createPom << {
+    pom {
+        project {
+            groupId 'com.github.alkurop'
+            artifactId  'jpermissionmanager'
+            version '0.0.8'
+
+            inceptionYear '2017'
+            licenses {
+                license {
+                    name 'MIT'
+                    url 'https://en.wikipedia.org/wiki/MIT_License'
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("build/publications/release/pom-default.xml")
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    buildDir =  "build/publications/release"
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    buildDir =  "build/publications/release"
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
 }
