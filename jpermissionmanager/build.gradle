@@ -51,33 +51,5 @@ buildscript {
     }
 
 }
-apply plugin: 'com.jfrog.bintray'
 
-
-bintray {
-    user = 'alkurop'
-    key = '6c8ff4d776d6c0efc6b12424d2efecceb8f7d077'
-    dryRun = false
-    publish = true
-
-
-    pkg {
-        userOrg = user
-        repo = 'maven'
-        name = 'jpermissionmanager'
-        licenses = ['MIT']
-        websiteUrl = 'https://github.com/alkurop/Android-Runtime-Permission-Manager.git'
-        issueTrackerUrl = 'https://github.com/alkurop/Android-Runtime-Permission-Manager.git'
-        vcsUrl = 'https://github.com/alkurop/Android-Runtime-Permission-Manager.git'
-        desc = 'A small library that manages android 6.0+ runtime permissions. Java version'
-        version {
-            name = '0.0.8'
-            vcsTag = '0.0.8'
-        }
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
-}
 
