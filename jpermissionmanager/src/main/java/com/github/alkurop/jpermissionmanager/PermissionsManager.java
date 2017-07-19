@@ -149,7 +149,7 @@ public class PermissionsManager implements PermissionHandler{
     }
     @Override
     public void onRequestPermissionsResult (int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE && permissions.length > 0 && grantResults.length > 0) {
             for (int i = 0; i < permissions.length; i++) {
                 mCheckResult.put(permissions[i], grantResults[i] == PackageManager.PERMISSION_GRANTED);
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {

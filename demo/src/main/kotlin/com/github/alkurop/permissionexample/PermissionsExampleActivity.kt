@@ -28,7 +28,7 @@ class PermissionsExampleActivity : AppCompatActivity() {
 
         val permissionWithDetails = mapOf(permission1, permission2, permission3)
         permissionManager.addPermissions(permissionWithDetails)
-        permissionManager.makePermissionRequest()
+            permissionManager.makePermissionRequest()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
