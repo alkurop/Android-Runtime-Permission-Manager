@@ -4,7 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.github.alkurop.permissionmanager.*
+import com.github.alkurop.jpermissionmanager.PermissionOptionalDetails
+import com.github.alkurop.jpermissionmanager.PermissionRequiredDetails
+import com.github.alkurop.jpermissionmanager.PermissionsManager
 
 class PermissionsExampleActivity : AppCompatActivity() {
 
@@ -15,16 +17,16 @@ class PermissionsExampleActivity : AppCompatActivity() {
         permissionManager = PermissionsManager(this)
         permissionManager.addPermissionsListener { }
 
-        val permission1 = Pair(Manifest.permission.READ_CONTACTS, PermissionOptionalDetails(title = "Read Contacts",
-                  message = "This permission is optional. I can live without it"))
+        val permission1 = Pair(Manifest.permission.READ_CONTACTS, PermissionOptionalDetails(  "Read Contacts",
+                   "This permission is optional. I can live without it"))
 
         val permission2 = Pair(Manifest.permission.READ_PHONE_STATE, PermissionRequiredDetails(
-                  title = "Read Phone State", message = "This permission is required. You have to turn it on",
-                  requiredMessage = "I really need this permission. Go to settings and turn it on"))
+                   "Read Phone State",   "This permission is required. You have to turn it on",
+                   "I really need this permission. Go to settings and turn it on"))
 
-        val permission3 = Pair(Manifest.permission.WRITE_EXTERNAL_STORAGE, PermissionRequiredDetails(title = "Write Storage",
-                  message = "This permission is required. You have to turn it on",
-                  requiredMessage = "I really need this permission. Go to settings and turn it on"))
+        val permission3 = Pair(Manifest.permission.WRITE_EXTERNAL_STORAGE, PermissionRequiredDetails( "Write Storage",
+                  "This permission is required. You have to turn it on",
+                  "I really need this permission. Go to settings and turn it on"))
 
         val permissionWithDetails = mapOf(permission1, permission2, permission3)
         permissionManager.addPermissions(permissionWithDetails)

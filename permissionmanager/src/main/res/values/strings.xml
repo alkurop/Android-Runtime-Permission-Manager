@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">PermissionManager</string>
-    <string name="dialog_ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="dialog_dismiss">Dismiss</string>
-
-</resources>
