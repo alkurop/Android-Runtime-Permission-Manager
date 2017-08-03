@@ -23,8 +23,8 @@ import java.util.Map;
  * Created by alkurop on 9/29/16.
  */
 
-public class PermissionsManager implements PermissionHandler{
-    private static final int REQUEST_CODE = 666;
+public class PermissionsManager implements PermissionHandler {
+    private int requestCode = 666;
     private static final String TAG = PermissionsManager.class.getName();
     private HashMap<String, Boolean> mCheckResult = new HashMap<>();
     private HashMap<String, PermissionOptionalDetails> mPermissions = new HashMap<>();
@@ -33,7 +33,7 @@ public class PermissionsManager implements PermissionHandler{
     private Fragment mFragment;
     private Context mContext;
 
-    public static Map<String, Boolean> checkPermissions (Context context, List<String> permissions) {
+    public static Map<String, Boolean> checkPermissions(Context context, List<String> permissions) {
         HashMap<String, Boolean> mCheckResult = new HashMap<>();
         for (String permission : permissions) {
             if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -45,40 +45,49 @@ public class PermissionsManager implements PermissionHandler{
         return mCheckResult;
     }
 
-    public PermissionsManager (Activity activity) {
+    public PermissionsManager(Activity activity) {
         this.mActivity = activity;
         this.mContext = activity;
     }
 
-    public PermissionsManager (Fragment fragment) {
+    public PermissionsManager(Fragment fragment) {
         this.mFragment = fragment;
         this.mContext = fragment.getContext();
     }
 
+    public void setRequestCode(int requestCode){
+        this.requestCode = requestCode;
+    }
+
     @Override
-    public void clearPermissionsListeners () {
+    public void clearPermissionsListeners() {
         mListeners.clear();
     }
+
     @Override
-    public void addPermissionsListener (PermissionListener listener) {
+    public void addPermissionsListener(PermissionListener listener) {
         mListeners.add(listener);
     }
+
     @Override
-    public void addPermissions (Map<String, PermissionOptionalDetails> permissionsWithDetails) {
+    public void addPermissions(Map<String, PermissionOptionalDetails> permissionsWithDetails) {
         for (Map.Entry<String, PermissionOptionalDetails> it : permissionsWithDetails.entrySet()) {
             mPermissions.put(it.getKey(), it.getValue());
         }
     }
+
     @Override
-    public void clearPermissions () {
+    public void clearPermissions() {
         mPermissions.clear();
     }
+
     @Override
-    public void makePermissionRequest () {
+    public void makePermissionRequest() {
         makePermissionRequest(true);
     }
+
     @Override
-    public void makePermissionRequest (boolean shouldClearResults) {
+    public void makePermissionRequest(boolean shouldClearResults) {
         if (shouldClearResults) {
             mCheckResult.clear();
         }
@@ -92,8 +101,7 @@ public class PermissionsManager implements PermissionHandler{
         }
     }
 
-
-    private void executePermissionRequest () {
+    private void executePermissionRequest() {
         HashSet<String> askPermissions = new HashSet<>();
         for (Map.Entry<String, PermissionOptionalDetails> it : mPermissions.entrySet()) {
             if (ContextCompat.checkSelfPermission(mContext, it.getKey())
@@ -108,9 +116,9 @@ public class PermissionsManager implements PermissionHandler{
             String[] permissionsArray = askPermissions.toArray(new String[askPermissions.size()]);
 
             if (mActivity != null) {
-                ActivityCompat.requestPermissions(mActivity, permissionsArray, REQUEST_CODE);
+                ActivityCompat.requestPermissions(mActivity, permissionsArray, requestCode);
             } else if (mFragment.isAdded()) {
-                mFragment.requestPermissions(permissionsArray, REQUEST_CODE);
+                mFragment.requestPermissions(permissionsArray, requestCode);
             }
         } else {
             notifyListeners();
@@ -118,27 +126,26 @@ public class PermissionsManager implements PermissionHandler{
 
     }
 
-    private void notifyListeners () {
+    private void notifyListeners() {
         for (PermissionListener mListener : mListeners) {
             mListener.onPermissionResult(mCheckResult);
         }
         log();
     }
 
-    private void startSettings () {
+    private void startSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         final String packageName = mContext.getPackageName();
 
         intent.setData(Uri.fromParts("package", packageName, null));
         if (mActivity != null) {
-            mActivity.startActivityForResult(intent, REQUEST_CODE);
+            mActivity.startActivityForResult(intent, requestCode);
         } else {
-            mFragment.startActivityForResult(intent, REQUEST_CODE);
+            mFragment.startActivityForResult(intent, requestCode);
         }
     }
 
-
-    private boolean shouldShowRequestPermissionExplanation (String permission) {
+    private boolean shouldShowRequestPermissionExplanation(String permission) {
         if (mActivity != null) {
             return ActivityCompat.shouldShowRequestPermissionRationale(mActivity, permission);
         } else if (mFragment.isAdded()) {
@@ -147,9 +154,10 @@ public class PermissionsManager implements PermissionHandler{
             return false;
         }
     }
+
     @Override
-    public void onRequestPermissionsResult (int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == REQUEST_CODE && permissions.length > 0 && grantResults.length > 0) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == this.requestCode && permissions.length > 0 && grantResults.length > 0) {
             for (int i = 0; i < permissions.length; i++) {
                 mCheckResult.put(permissions[i], grantResults[i] == PackageManager.PERMISSION_GRANTED);
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
@@ -171,18 +179,18 @@ public class PermissionsManager implements PermissionHandler{
         }
     }
 
-    private void showExplanation (final String permission, PermissionOptionalDetails details) {
+    private void showExplanation(final String permission, PermissionOptionalDetails details) {
         new AlertDialog.Builder(mContext).setTitle(details.title)
                 .setMessage(details.message)
                 .setPositiveButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick (DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         makePermissionRequest(false);
                     }
                 })
                 .setNegativeButton(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick (DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         if (mPermissions.get(permission) instanceof PermissionRequiredDetails) {
                         } else {
                             mPermissions.remove(permission);
@@ -194,7 +202,7 @@ public class PermissionsManager implements PermissionHandler{
                 .show();
     }
 
-    private void showExplanationPermissionRequired (PermissionOptionalDetails details) {
+    private void showExplanationPermissionRequired(PermissionOptionalDetails details) {
         final String message;
         if (details instanceof PermissionRequiredDetails) {
             message = ((PermissionRequiredDetails) details).requiredMessage;
@@ -205,26 +213,27 @@ public class PermissionsManager implements PermissionHandler{
                 .setMessage(message)
                 .setPositiveButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick (DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         startSettings();
                     }
                 })
                 .setNegativeButton(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick (DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                            }
-                        })
+                    }
+                })
                 .show();
     }
+
     @Override
-    public void onActivityResult (int requestCode) {
-        if (requestCode == REQUEST_CODE) {
+    public void onActivityResult(int requestCode) {
+        if (requestCode == this.requestCode) {
             makePermissionRequest(false);
         }
     }
 
-    private void log () {
+    private void log() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, Boolean> it : mCheckResult.entrySet()) {
             stringBuilder.append("permission " + it.getKey() + " " + it.getValue() + "\n");
