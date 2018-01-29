@@ -2,15 +2,16 @@ apply plugin: 'com.android.library'
 
 android {
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -20,36 +21,6 @@ android {
 
 }
 
-ext {
-    supportVersion = "25.3.1"
-    mockitoVersion = "2.0.52-beta"
-    mockitoKotlinVersion = "0.5.1"
-}
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:recyclerview-v7:$supportVersion"
-    compile "com.android.support:appcompat-v7:$supportVersion"
-
-    androidTestCompile 'org.robolectric:robolectric:3.0'
-    androidTestCompile "org.mockito:mockito-core:$mockitoVersion"
-    androidTestCompile "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
-    androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'org.assertj:assertj-core:3.5.1'
-
-    testCompile "org.mockito:mockito-core:$mockitoVersion"
-    testCompile "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0'
-    testCompile 'org.assertj:assertj-core:3.5.1'
+    implementation "com.android.support:appcompat-v7:$supportVersion"
 }
-
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-
-}
-
-
