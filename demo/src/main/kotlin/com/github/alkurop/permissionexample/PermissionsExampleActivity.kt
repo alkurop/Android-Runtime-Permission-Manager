@@ -3,7 +3,7 @@ package com.github.alkurop.permissionexample
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.github.alkurop.jpermissionmanager.PermissionOptionalDetails
 import com.github.alkurop.jpermissionmanager.PermissionRequiredDetails
 import com.github.alkurop.jpermissionmanager.PermissionsManager
@@ -40,6 +40,7 @@ class PermissionsExampleActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         permissionManager.onActivityResult(requestCode)
+        @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
     }
 }

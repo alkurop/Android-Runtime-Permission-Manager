@@ -1,13 +1,14 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdk rootProject.ext.minSdk
+        targetSdk rootProject.ext.targetSdk
         versionCode 1
         versionName "1.0"
     }
@@ -24,8 +25,8 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$versions.support"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
     implementation project(":jpermissionmanager")
 }
 

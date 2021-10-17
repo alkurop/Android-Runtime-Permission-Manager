@@ -8,11 +8,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,13 +27,14 @@ import java.util.Map;
 public class PermissionsManager implements PermissionHandler {
     private int requestCode = 666;
     private static final String TAG = PermissionsManager.class.getName();
-    private HashMap<String, Boolean> mCheckResult = new HashMap<>();
-    private HashMap<String, PermissionOptionalDetails> mPermissions = new HashMap<>();
-    private HashSet<PermissionListener> mListeners = new HashSet<>();
+    private final HashMap<String, Boolean> mCheckResult = new HashMap<>();
+    private final HashMap<String, PermissionOptionalDetails> mPermissions = new HashMap<>();
+    private final HashSet<PermissionListener> mListeners = new HashSet<>();
     private Activity mActivity;
     private Fragment mFragment;
-    private Context mContext;
+    private final Context mContext;
 
+    @SuppressWarnings("UNUSED")
     public static Map<String, Boolean> checkPermissions(Context context, List<String> permissions) {
         HashMap<String, Boolean> mCheckResult = new HashMap<>();
         for (String permission : permissions) {

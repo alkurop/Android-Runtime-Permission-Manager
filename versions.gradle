@@ -1,0 +1,14 @@
+ext.versions = [
+        'ghostinshell'          :'0.1',
+        'kotlin'                :'1.5.21',
+        'ktxFragment'           :'1.3.3',
+        'lifecycle'             :'2.3.1',
+        'rxView'                :'4.0.0',
+        'rxAndroid'             :'3.0.0',
+        'rxJava'                :'3.0.12',
+        'rxKotlin'              :'3.0.1',
+        'stringerbell'          :'0.4',
+        'support'               :'1.3.0',
+        'timber'                :'4.7.1'
+]
+
