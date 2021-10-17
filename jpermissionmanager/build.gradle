@@ -13,8 +13,27 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
 }
 
 dependencies {
     implementation "androidx.appcompat:appcompat:$versions.support"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.alkurop'
+                artifactId = 'jpermissionmanager'
+                version = '0.14.13'
+            }
+        }
+    }
 }
